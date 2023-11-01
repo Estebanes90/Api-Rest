@@ -13,6 +13,12 @@ class LibrosController{
 	    res.json({"Id insertado": result.insertId});
     }
 
+    async update (req, res){
+        const libro = req.body;
+        const [result] = await pool.query('UPDATE libros SET nombre=(?), autor(?), categoria(?), año_publicacion(?), ISBN(?) WHERE id=(?)', [libro.nombre, libro.autor, libro.categoria, libro.año_publicacion, libro.ISBN, libro.id]);
+        res.json ({"Registros actualizados": result.changedRows});
+    }
+
     async getOne(req, res){
         const id = req.body.id;
         const [result] = await pool.query('SELECT * FROM libros WHERE id = ?', [id]);
