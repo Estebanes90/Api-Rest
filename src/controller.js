@@ -10,7 +10,7 @@ class LibrosController{
     async add (req, res){
 	        const libro = req.body;
         try {
-	        const [result] = await pool.query ('INSERT INTO libros(nombre, autor, categoria, año_publicacion, ISBN) VALUES (?,?,?,?)', [libro.nombre, libro.autor, libro.categoria, libro.año_publicacion, libro.ISBN]);
+	        const [result] = await pool.query ('INSERT INTO libros(nombre, autor, categoria, año_publicacion, ISBN) VALUES (?,?,?,?,?)', [libro.nombre, libro.autor, libro.categoria, libro.año_publicacion, libro.ISBN]);
 	        res.json({"Id insertado": result.insertId});
         } catch(error) {
             console.log('Error al añadir libro:', error);
@@ -20,7 +20,7 @@ class LibrosController{
     async update (req, res){
         const libro = req.body;
         try{
-            const [result] = await pool.query('UPDATE libros SET nombre=(?), autor(?), categoria(?), año_publicacion(?), ISBN(?) WHERE id=(?)', [libro.nombre, libro.autor, libro.categoria, libro.año_publicacion, libro.ISBN, libro.id]);
+            const [result] = await pool.query('UPDATE libros SET nombre=(?), autor=(?), categoria=(?), año_publicacion=(?), ISBN=(?) WHERE id=(?)', [libro.nombre, libro.autor, libro.categoria, libro.año_publicacion, libro.ISBN, libro.id]);
             res.json ({"Registros actualizados": result.changedRows});
         } catch(error){
             console.log ('Error al actualizar libro:', error);
