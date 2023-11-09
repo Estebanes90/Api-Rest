@@ -17,11 +17,9 @@ class UsuariosController{
     try {
         // Hashear la contraseña
         const hashedPassword = await bcrypt.hash(usuario.pass, 10); // 10 es el número de rondas de salting
-
         // Insertar el usuario en la base de datos con la contraseña hasheada
         const [result] = await pool.query('INSERT INTO usuarios(nombre, apellido, usuario, email, pass, perfil_id, id_bandera) VALUES (?,?,?,?,?,?,?)', [usuario.nombre, usuario.apellido, usuario.usuario, usuario.email, hashedPassword, usuario.perfil_id, usuario.id_bandera]);
-
-        res.json({ "Usuario insertado": result.insertId, "message": "El usuario se ha agregado con éxito" });
+        res.json({ "Usuario insertado": result.insertId, "message": `El usuario ${usuario.usuario} se ha agregado con éxito`});
     } catch (error) {
         res.status(500).json({ "Error": "Ha ocurrido un error al agregar el usuario" });
     }
@@ -54,9 +52,9 @@ class UsuariosController{
         try {
               const [result] = await pool.query('UPDATE usuarios SET id_bandera=2 WHERE email=(?)', [usuario.email]);
               if (result.affectedRows > 0){
-		 res.json ({"message": "El usuario con email ${usuario.email} se ha eliminado con éxito"});
+		 res.json ({"message": `El usuario con email ${usuario.email} se ha eliminado con éxito`});
 	      }else{
-		 res.status(404).json({"Error": "No se ha encontrado el usuario con email: ${usuario.email}"});
+		 res.status(404).json({"Error": `No se ha encontrado el usuario con email: ${usuario.email}`});
 	    }
         } catch(error){
              res.status(500).json({"Error": "Ha ocurrido un error al intentar eliminar el usuario"});
@@ -64,13 +62,13 @@ class UsuariosController{
     }
 
     async deleteLogicoUsuario (req, res){
-        const usuario = req.body;
         try {
+              const usuario = req.body;
               const [result] = await pool.query('UPDATE usuarios SET id_bandera=2 WHERE usuario=(?)', [usuario.usuario]);
               if (result.affectedRows > 0){
-		 res.json ({"message": "El usuario ${usuario.usuario} se ha eliminado con éxito"});
+		 res.json ({"message": `El usuario ${usuario.usuario} se ha eliminado con éxito`});
 	      }else{
-		 res.status(404).json({"Error": "No se ha encontrado el usuario ${usuario.usuario}"});
+		 res.status(404).json({"Error": `No se ha encontrado el usuario ${usuario.usuario}`});
 	    }
         } catch(error){
              res.status(500).json({"Error": "Ha ocurrido un error al intentar eliminar el usuario"});
@@ -82,12 +80,12 @@ class UsuariosController{
         try {
               const[result] = await pool.query('DELETE FROM usuarios WHERE email=(?)', [usuario.email]);
               if (result.affectedRows> 0){
-		  res.json({"mesagge": "Se ah eliminado con éxito el usuario con Email: ${usuario.email}"});
+		  res.json({"mesagge": `Se ah eliminado con éxito el usuario con Email: ${usuario.email}`});
 	      }else{
-		  res.status(404).json({"Error": "No se ha encontrado ningún usuario con el Email: ${usuario.email}"});
+		  res.status(404).json({"Error": `No se ha encontrado ningún usuario con el Email: ${usuario.email}`});
 	      }
         } catch(error){
-              res.status(500).json({"Error": "Ocurrió un error al eliminar el usuario con Email: ${usuario.email}"});
+              res.status(500).json({"Error": `Ocurrió un error al eliminar el usuario con Email: ${usuario.email}`});
         }
     }
 	    
@@ -96,9 +94,9 @@ class UsuariosController{
         try {
               const[result] = await pool.query('DELETE FROM usuarios WHERE usuario=(?)', [usuario.usuario]);
               if (result.affectedRows > 0){ 
-		 res.json({"mesagge": "Se ha eliminado con éxito el usuario ${usuario.usuario}"});
+		 res.json({"mesagge": `Se ha eliminado con éxito el usuario ${usuario.usuario}`});
 	      }else{
-		 res.status(404).json({"Error": "No se encontró ningún usuario ${usuario.usuario}"});
+		 res.status(404).json({"Error": `No se encontró ningún usuario ${usuario.usuario}`});
           }        
 	} catch(error){
               res.status(500).json({"Error": "Ocurrió un error al eliminar el usuario"});
@@ -113,7 +111,7 @@ class UsuariosController{
              if (result.length > 0) {
             	res.json(result[0]);
              }else{
-                res.status(404).json({"Error": "No se encontró el usuario ${usuario.usuario}"});
+                res.status(404).json({"Error": `No se encontró el usuario ${usuario.usuario}`});
         }
 	} catch (error){
 		res.status(500).json({"Error": "Ocurrió un error al obtener el usuario"});
