@@ -1,80 +1,109 @@
 import {pool} from './database.js';
 
-class LibrosController{
+class UsuariosController{
 
     async getAll(req, res){
 	try {
-             const [result] = await pool.query('SELECT * FROM libros');
+             const [result] = await pool.query('SELECT * FROM usuarios');
              res.json(result);
 	}catch (error){
-	     res.status(500).json({"Error": "Ha ocurrido un error al obtener los datos de libros"});
+	     res.status(500).json({"Error": "Ha ocurrido un error al obtener los datos de usuarios"});
 	}
     }
 
     async add (req, res){
-	const libro = req.body;
+	const usuario = req.body;
         try {
-	     const [result] = await pool.query ('INSERT INTO libros(nombre, autor, categoria, año_publicacion, ISBN) VALUES (?,?,?,?,?)', [libro.nombre, libro.autor, libro.categoria, libro.año_publicacion, libro.ISBN]);
-	     res.json({"Id insertado": result.insertId, "message": "El libro se ha agregado con éxito"});
+	     const [result] = await pool.query ('INSERT INTO usuarios(nombre, apellido, usuario, email, pass, perfil_id, id_bandera) VALUES (?,?,?,?,?,?,?)', [usuario.nombre, usuario.apellido, usuario.usuario, usuario.email, usuario.pass, usuario.perfil_di, usuario.id_bandera]);
+	     res.json({"Usuario insertado": result.insertId, "message": "El usuario se ha agregado con éxito"});
         } catch(error) {
-             res.status(500).json({"Error": "Ha ocurrido un error al agregar el libro"});
+             res.status(500).json({"Error": "Ha ocurrido un error al agregar el usuario"});
         }
     }
 
     async update (req, res){
-        const libro = req.body;
+        const usuario = req.body;
         try {
-              const [result] = await pool.query('UPDATE libros SET nombre=(?), autor=(?), categoria=(?), año_publicacion=(?), ISBN=(?) WHERE id=(?)', [libro.nombre, libro.autor, libro.categoria, libro.año_publicacion, libro.ISBN, libro.id]);
+              const [result] = await pool.query('UPDATE usuarios SET nombre=(?), apellido=(?), usuario=(?), email=(?), pass=(?), perfil_id=(?), id_bandera=(?) WHERE usuario=(?)', [usuario.nombre, usuario.apellido, usuario.usuario, usuario.email, usuario.pass, usuario.perfil_di, usuario.id_bandera]);
               if (result.affectedRows > 0){
-		 res.json ({"message": "El libro con el ISBN ${libro.ISBN} se ha actualizado con éxito"});
+		 res.json ({"message": "El usuario ${usuario.usuario} se ha actualizado con éxito"});
 	      }else{
-		 res.status(404).json({"Error": "No se ha encontrado ningún libro con el ISBN ${libro.ISBN}"});
+		 res.status(404).json({"Error": "No se ha encontrado el usuario ${usuario.usuario}"});
 	    }
         } catch(error){
-             res.status(500).json({"Error": "Ha ocurrido un error al intentar actualizar el libro"});
+             res.status(500).json({"Error": "Ha ocurrido un error al intentar actualizar el usuario"});
         } 
     }
 
-    async deleteId (req, res){
-        const libro = req.body;
+    async deleteLogicoEmail (req, res){
+        const usuario = req.body;
         try {
-              const[result] = await pool.query('DELETE FROM libros WHERE id=(?)', [libro.id]);
-              if (result.affectedRows> 0){
-		  res.json({"mesagge": "Se ah eliminado con éxito el libro con Id: ${libro.id}"});
+              const [result] = await pool.query('UPDATE usuarios SET id_bandera=2 WHERE email=(?)', [usuario.email]);
+              if (result.affectedRows > 0){
+		 res.json ({"message": "El usuario con email ${usuario.email} se ha eliminado con éxito"});
 	      }else{
-		  res.status(404).json({"Error": "No se ha encontrado ningún libro con el Id ${libro.id}"});
+		 res.status(404).json({"Error": "No se ha encontrado el usuario con email: ${usuario.email}"});
+	    }
+        } catch(error){
+             res.status(500).json({"Error": "Ha ocurrido un error al intentar eliminar el usuario"});
+        } 
+    }
+
+    async deleteLogicoUsuario (req, res){
+        const usuario = req.body;
+        try {
+              const [result] = await pool.query('UPDATE usuarios SET id_bandera=2 WHERE usuario=(?)', [usuario.usuario]);
+              if (result.affectedRows > 0){
+		 res.json ({"message": "El usuario ${usuario.usuario} se ha eliminado con éxito"});
+	      }else{
+		 res.status(404).json({"Error": "No se ha encontrado el usuario ${usuario.usuario}"});
+	    }
+        } catch(error){
+             res.status(500).json({"Error": "Ha ocurrido un error al intentar eliminar el usuario"});
+        } 
+    }
+
+    async deleteEmail (req, res){
+        const usuario = req.body;
+        try {
+              const[result] = await pool.query('DELETE FROM usuarios WHERE email=(?)', [usuario.email]);
+              if (result.affectedRows> 0){
+		  res.json({"mesagge": "Se ah eliminado con éxito el usuario con Email: ${usuario.email}"});
+	      }else{
+		  res.status(404).json({"Error": "No se ha encontrado ningún usuario con el Email: ${usuario.email}"});
 	      }
         } catch(error){
-              res.status(500).json({"Error": "Ocurrió un error al eliminar libro:"});
+              res.status(500).json({"Error": "Ocurrió un error al eliminar el usuario con Email: ${usuario.email}"});
         }
     }
 	    
-    async deleteISBN (req, res){
-        const libro = req.body;
+    async deleteUsuario (req, res){
+        const usuario = req.body;
         try {
-              const[result] = await pool.query('DELETE FROM libros WHERE ISBN=(?)', [libro.ISBN]);
+              const[result] = await pool.query('DELETE FROM usuarios WHERE usuario=(?)', [usuario.usuario]);
               if (result.affectedRows > 0){ 
-		 res.json({"mesagge": "Se ha eliminado con éxito el libro con el ISBN ${libro.ISNB}"});
+		 res.json({"mesagge": "Se ha eliminado con éxito el usuario ${usuario.usuario}"});
 	      }else{
-		 res.status(404).json({"Error": "No se encontró ningún libro con el ISBN ${libro.ISBN}"});        
+		 res.status(404).json({"Error": "No se encontró ningún usuario ${usuario.usuario}"});
+          }        
 	} catch(error){
-              res.status(500).json({"Error": "Ocurrió un error al eliminar el libro"});
+              res.status(500).json({"Error": "Ocurrió un error al eliminar el usuario"});
         }
     }
     
 
     async getOne(req, res){
-        const id = req.body.id;
+        const usuario = req.body.usuario;
         try {
-	     const [result] = await pool.query('SELECT * FROM libros WHERE id = ?', [id]);
+	     const [result] = await pool.query('SELECT * FROM usuarios WHERE usuario = ?', [usuario]);
              if (result.length > 0) {
             	res.json(result[0]);
              }else{
-                res.status(404).json({"Error": "No se encontró el libro con el id ${libro.id}"});
+                res.status(404).json({"Error": "No se encontró el usuario ${usuario.usuario}"});
         }
 	} catch (error){
-		res.status(500).json({"Error": "Ocurrió un error al obtener el libro"});
+		res.status(500).json({"Error": "Ocurrió un error al obtener el usuario"});
         }
     }
 }
-export const libros = new LibrosController(); 
+export const usuarios = new UsuariosController(); 
