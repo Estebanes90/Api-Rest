@@ -1,11 +1,13 @@
 import {Router } from 'express'; 
-import {libros} from './controller.js';
+import {usuarios} from './controller.js';
 
 export const router = Router()
 
-router.get ('/libros', libros.getAll);
-router.post ('/libro', libros.add);
-router.put ('/libro', libros.update);
-router.delete ('/libroId', libros.deleteId);
-router.delete ('/libroISBN', libros.deleteISBN);
-router.get ('/libros', libros.getOne);
+router.get ('/usuarios', usuarios.getAll);
+router.post ('/usuarios', usuarios.add);
+router.put ('/usuarios', usuarios.update);
+router.delete ('/usuariosLogicoEmail', usuarios.deleteLogicoEmail);
+router.delete ('/usuariosLogicoUsuario', usuarios.deleteLogicoUsuario);
+router.delete ('/usuariosEmail', usuarios.deleteEmail);
+router.delete ('/usuariosUsuario', usuarios.deleteUsuario);
+router.get ('/usuarios', usuarios.getOne);
