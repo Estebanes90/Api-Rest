@@ -31,7 +31,11 @@ class UsuariosController{
 async update(req, res) {
     const usuario = req.body;
     try {
+<<<<<<< HEAD
     // Primero verificamos si usuario.pass se proporciona en la solicitud.
+=======
+        // Primero verificamos si usuario.pass se proporciona en la solicitud.
+>>>>>>> caef6ab07e418d107e97e91d9af5887a2bc196ab
 	// Hashear la contraseña si se proporciona en la solicitud
         if (usuario.pass) {
             const hashedPassword = await bcrypt.hash(usuario.pass, 10);
@@ -120,4 +124,8 @@ async update(req, res) {
         }
     }
 }
+<<<<<<< HEAD
 export const usuarios = new UsuariosController(); 
+=======
+export const usuarios = new UsuariosController(); 
+>>>>>>> caef6ab07e418d107e97e91d9af5887a2bc196ab
