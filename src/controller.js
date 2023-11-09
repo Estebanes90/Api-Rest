@@ -1,5 +1,5 @@
 import {pool} from './database.js';
-const bcrypt = require('bcrypt'); // Importa la librería bcrypt
+import bcrypt from 'bcrypt'; // Importa la librería bcrypt
 
 class UsuariosController{
 
