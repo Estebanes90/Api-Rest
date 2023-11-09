@@ -10,8 +10,4 @@ router.delete ('/usuariosLogicoEmail', usuarios.deleteLogicoEmail);
 router.delete ('/usuariosLogicoUsuario', usuarios.deleteLogicoUsuario);
 router.delete ('/usuariosEmail', usuarios.deleteEmail);
 router.delete ('/usuariosUsuario', usuarios.deleteUsuario);
-<<<<<<< HEAD
 router.get ('/usuarios', usuarios.getOne);
-=======
-router.get ('/usuarios', usuarios.getOne);
->>>>>>> caef6ab07e418d107e97e91d9af5887a2bc196ab

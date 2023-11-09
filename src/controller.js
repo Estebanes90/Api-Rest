@@ -11,7 +11,7 @@ class UsuariosController{
 	     res.status(500).json({"Error": "Ha ocurrido un error al obtener los datos de usuarios"});
 	}
     }
-
+    
     async add(req, res) {
     const usuario = req.body;
     try {
@@ -25,33 +25,29 @@ class UsuariosController{
     } catch (error) {
         res.status(500).json({ "Error": "Ha ocurrido un error al agregar el usuario" });
     }
-}
-
-
-async update(req, res) {
-    const usuario = req.body;
-    try {
-<<<<<<< HEAD
-    // Primero verificamos si usuario.pass se proporciona en la solicitud.
-=======
-        // Primero verificamos si usuario.pass se proporciona en la solicitud.
->>>>>>> caef6ab07e418d107e97e91d9af5887a2bc196ab
-	// Hashear la contraseña si se proporciona en la solicitud
-        if (usuario.pass) {
-            const hashedPassword = await bcrypt.hash(usuario.pass, 10);
-            usuario.pass = hashedPassword; // Actualiza la contraseña hasheada en el objeto usuario
-        }
-        // Realizar la actualización en la base de datos
-        const [result] = await pool.query('UPDATE usuarios SET nombre=?, apellido=?, usuario=?, email=?, pass=?, perfil_id=?, id_bandera=? WHERE usuario=?', [usuario.nombre, usuario.apellido, usuario.usuario, usuario.email, usuario.pass, usuario.perfil_id, usuario.id_bandera, usuario.usuario]);
-        if (result.affectedRows > 0) {
-            res.json({ "message": `El usuario ${usuario.usuario} se ha actualizado con éxito` });
-        } else {
-            res.status(404).json({ "Error": `No se ha encontrado el usuario ${usuario.usuario}` });
-        }
-    } catch (error) {
-        res.status(500).json({ "Error": "Ha ocurrido un error al intentar actualizar el usuario" });
     }
-}
+
+
+    async update(req, res) {
+        const usuario = req.body;
+        try {
+        // Primero verificamos si usuario.pass se proporciona en la solicitud.
+        // Hashear la contraseña si se proporciona en la solicitud
+            if (usuario.pass) {
+                const hashedPassword = await bcrypt.hash(usuario.pass, 10);
+                usuario.pass = hashedPassword; // Actualiza la contraseña hasheada en el objeto usuario
+            }
+            // Realizar la actualización en la base de datos
+            const [result] = await pool.query('UPDATE usuarios SET nombre=?, apellido=?, usuario=?, email=?, pass=?, perfil_id=?, id_bandera=? WHERE usuario=?', [usuario.nombre, usuario.apellido, usuario.usuario, usuario.email, usuario.pass, usuario.perfil_id, usuario.id_bandera, usuario.usuario]);
+            if (result.affectedRows > 0) {
+                res.json({ "message": `El usuario ${usuario.usuario} se ha actualizado con éxito` });
+            } else {
+                res.status(404).json({ "Error": `No se ha encontrado el usuario ${usuario.usuario}` });
+            }
+        } catch (error) {
+            res.status(500).json({ "Error": "Ha ocurrido un error al intentar actualizar el usuario" });
+        }
+    }
 
     async deleteLogicoEmail (req, res){
         const usuario = req.body;
@@ -124,8 +120,5 @@ async update(req, res) {
         }
     }
 }
-<<<<<<< HEAD
-export const usuarios = new UsuariosController(); 
-=======
-export const usuarios = new UsuariosController(); 
->>>>>>> caef6ab07e418d107e97e91d9af5887a2bc196ab
+
+export const usuarios = new UsuariosController();

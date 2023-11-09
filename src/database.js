@@ -1,10 +1,10 @@
 import mysqlConnection from "mysql2/promise";
 
-const porperties = {
+const properties = {
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'burguener_r'
 };
 
-export const pool = mysqlConnection.createPool(porperties);
+export const pool = mysqlConnection.createPool(properties);
